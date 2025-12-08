@@ -2,6 +2,23 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   try {
+    // Check environment variables first
+    if (!process.env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY is not set');
+      return NextResponse.json(
+        { error: 'Server configuration error: Missing API key' },
+        { status: 500 }
+      );
+    }
+
+    if (!process.env.CONTACT_EMAIL) {
+      console.error('CONTACT_EMAIL is not set');
+      return NextResponse.json(
+        { error: 'Server configuration error: Missing contact email' },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { name, businessName, email, needType, description } = body;
 
@@ -54,9 +71,16 @@ export async function POST(request) {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error('Resend API error:', error);
+      console.error('Resend API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: error
+      });
       return NextResponse.json(
-        { error: 'Failed to send email' },
+        { 
+          error: 'Failed to send email',
+          details: error.message || 'Unknown error from email service'
+        },
         { status: 500 }
       );
     }
@@ -65,9 +89,16 @@ export async function POST(request) {
     return NextResponse.json({ success: true, id: data.id }, { status: 200 });
 
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('Contact form error:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        message: error.message 
+      },
       { status: 500 }
     );
   }
