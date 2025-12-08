@@ -612,7 +612,7 @@ function Footer() {
 
           <div className="text-sm text-center md:text-right">
             <p>© {new Date().getFullYear()} GWM-Code.</p>
-            <p className="text-xs text-gray-600 mt-1">GWM-Code is a trading name of Tapio [Lastname].<br/>Registered in Wexford, Ireland.</p>
+            <p className="text-xs text-gray-600 mt-1">GWM-Code is a trading name of Tapio Ala.<br/>Registered in Wexford, Ireland.</p>
           </div>
         </div>
       </div>
