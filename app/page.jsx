@@ -138,7 +138,7 @@ function Navbar({ onRequestDemo }) {
 }
 
 // Hero Section with Inline Form
-function HeroSection({ onSubmit, formData, handleChange }) {
+function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitError }) {
   return (
     <section className="pt-32 pb-20 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -719,6 +719,8 @@ export default function GWMCodeLanding() {
         onSubmit={handleSubmit} 
         formData={formData} 
         handleChange={handleChange}
+        isSubmitting={isSubmitting}
+        submitError={submitError}
       />
       <StatsSection />
       <ServicesSection />
