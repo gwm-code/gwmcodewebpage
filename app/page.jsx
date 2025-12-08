@@ -292,12 +292,19 @@ function HeroSection({ onSubmit, formData, handleChange }) {
                   />
                 </div>
 
+                {submitError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm mb-4">
+                    {submitError}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Get Free Consultation</span>
-                  <ArrowRight size={20} />
+                  <span>{isSubmitting ? 'Sending...' : 'Get Free Consultation'}</span>
+                  {!isSubmitting && <ArrowRight size={20} />}
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
@@ -653,6 +660,8 @@ export default function GWMCodeLanding() {
     description: ''
   });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -661,18 +670,45 @@ export default function GWMCodeLanding() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 5000);
-    setFormData({
-      name: '',
-      businessName: '',
-      email: '',
-      needType: '',
-      description: ''
-    });
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      // Success!
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 5000);
+      
+      // Reset form
+      setFormData({
+        name: '',
+        businessName: '',
+        email: '',
+        needType: '',
+        description: ''
+      });
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitError('Failed to send message. Please try again or email us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToTop = () => {
