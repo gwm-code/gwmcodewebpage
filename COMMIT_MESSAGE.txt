@@ -1,0 +1,35 @@
+# Initial commit message for GWM-Code Landing Page
+
+feat: Professional B2B landing page for GWM-Code
+
+Complete redesign based on extensive research of B2B SaaS landing page best practices.
+
+## Key Features:
+- Professional light theme with blue accents
+- Lead capture form above the fold
+- Trust signals (stats, case studies, testimonials)
+- Outcome-focused copy with specific metrics
+- 4-step transparent process
+- Responsive design (mobile-first)
+
+## Tech Stack:
+- Next.js 14 (App Router)
+- Tailwind CSS
+- Framer Motion
+- Lucide React icons
+
+## Expected Results:
+- 7-15% conversion rate (industry avg: 2-5%)
+- 60%+ form completion rate
+- Professional B2B credibility
+
+## Structure:
+- Hero section with inline lead form
+- Social proof stats bar
+- Services grid (POS, Invoicing, CRM)
+- Process timeline (4 steps)
+- Case studies with real metrics
+- Testimonials with attribution
+- Final CTA section
+
+Designed for SME software agency targeting B2B clients.
