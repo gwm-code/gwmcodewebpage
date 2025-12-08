@@ -216,7 +216,8 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
           </div>
 
           <AnimatedSection delay={0.2}>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 shadow-xl sticky top-28">
+            {/* ADDED id="contact-form" HERE 👇 */}
+            <div id="contact-form" className="bg-white rounded-2xl border-2 border-gray-200 p-8 shadow-xl sticky top-28 scroll-mt-24">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">
                   Start Your Project Today
@@ -678,13 +679,19 @@ export default function GWMCodeLanding() {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  // NEW: Scroll specifically to the form ID
+  const scrollToForm = () => {
+    const formElement = document.getElementById('contact-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar onRequestDemo={scrollToTop} />
+      {/* Pass the new function to Navbar */}
+      <Navbar onRequestDemo={scrollToForm} />
+      
       <HeroSection 
         onSubmit={handleSubmit} 
         formData={formData} 
@@ -697,7 +704,10 @@ export default function GWMCodeLanding() {
       <ProcessSection />
       <CaseStudiesSection />
       {/* TestimonialsSection removed as requested */}
-      <FinalCTASection onGetStarted={scrollToTop} />
+      
+      {/* Pass the new function to the bottom CTA too */}
+      <FinalCTASection onGetStarted={scrollToForm} />
+      
       <Footer />
 
       {showSuccess && (
