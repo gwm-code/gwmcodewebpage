@@ -670,9 +670,6 @@ export default function GWMCodeLanding() {
     });
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
