@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { 
   CreditCard, FileText, Users, Menu, X, Check, ArrowRight, 
-  Shield, Zap, Clock, CheckCircle2, Star
+  Shield, Zap, Clock, CheckCircle2
 } from 'lucide-react';
 
 // Animation variants
@@ -145,9 +145,10 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-8">
             <AnimatedSection>
+              {/* UPDATED: Localized Trust Badge */}
               <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-2 text-sm font-medium text-blue-700">
                 <CheckCircle2 size={16} />
-                <span>Trusted by 50+ growing businesses</span>
+                <span>Building custom tools for Irish SMEs</span>
               </div>
             </AnimatedSection>
 
@@ -179,6 +180,24 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
                     <span className="text-gray-700 font-medium">{benefit}</span>
                   </div>
                 ))}
+              </div>
+            </AnimatedSection>
+
+            {/* NEW: Pricing Comparison Hook */}
+            <AnimatedSection delay={0.35}>
+              <div className="mt-8 bg-slate-50 border border-slate-200 rounded-xl p-4 max-w-md">
+                <div className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wider">The Real Cost of Software</div>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <div className="text-red-500 font-bold line-through text-lg">€150/mo</div>
+                    <div className="text-xs text-gray-500">Standard SaaS</div>
+                  </div>
+                  <div className="h-8 w-px bg-gray-300"></div>
+                  <div>
+                    <div className="text-green-600 font-bold text-lg">One-time Fee</div>
+                    <div className="text-xs text-gray-500">GWM-Code Asset</div>
+                  </div>
+                </div>
               </div>
             </AnimatedSection>
 
@@ -224,9 +243,10 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
                   />
                 </div>
 
+                {/* UPDATED: Optional Business Name */}
                 <div>
                   <label htmlFor="businessName" className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    Business Name *
+                    Business Name <span className="text-gray-400 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="text"
@@ -234,7 +254,6 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
                     name="businessName"
                     value={formData.businessName}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Your Company Ltd."
                   />
@@ -537,59 +556,6 @@ function CaseStudiesSection() {
   );
 }
 
-// Testimonials
-function TestimonialsSection() {
-  const testimonials = [
-    {
-      quote: "GWM-Code built exactly what we needed. No bloatware, no monthly fees. It just works.",
-      author: "Sarah Mitchell",
-      role: "Owner",
-      company: "Mitchell's Hardware",
-      rating: 5
-    },
-    {
-      quote: "Best investment we made. The custom invoicing system paid for itself in 6 months by eliminating our SaaS subscriptions.",
-      author: "James Chen",
-      role: "Finance Director",
-      company: "Chen & Associates",
-      rating: 5
-    }
-  ];
-
-  return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            What Our Clients Say
-          </h2>
-        </AnimatedSection>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <AnimatedSection key={index} delay={index * 0.1}>
-              <div className="bg-gray-50 rounded-xl p-8 border border-gray-200">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={20} className="fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-lg text-gray-700 mb-6 leading-relaxed italic">
-                  "{testimonial.quote}"
-                </p>
-                <div>
-                  <div className="font-bold text-slate-900">{testimonial.author}</div>
-                  <div className="text-sm text-gray-600">{testimonial.role}, {testimonial.company}</div>
-                </div>
-              </div>
-            </AnimatedSection>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // Final CTA
 function FinalCTASection({ onGetStarted }) {
   return (
@@ -628,7 +594,10 @@ function Footer() {
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">G</span>
             </div>
-            <span className="text-xl font-semibold text-white">GWM-Code</span>
+            <div>
+              <span className="text-xl font-semibold text-white block">GWM-Code</span>
+              <span className="text-xs text-gray-500">Built in Wexford, Ireland 🇮🇪</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-6 text-sm">
@@ -641,8 +610,9 @@ function Footer() {
             </a>
           </div>
 
-          <div className="text-sm">
-            © {new Date().getFullYear()} GWM-Code. All rights reserved.
+          <div className="text-sm text-center md:text-right">
+            <p>© {new Date().getFullYear()} GWM-Code.</p>
+            <p className="text-xs text-gray-600 mt-1">GWM-Code is a trading name of Tapio [Lastname].<br/>Registered in Wexford, Ireland.</p>
           </div>
         </div>
       </div>
@@ -726,7 +696,7 @@ export default function GWMCodeLanding() {
       <ServicesSection />
       <ProcessSection />
       <CaseStudiesSection />
-      <TestimonialsSection />
+      {/* TestimonialsSection removed as requested */}
       <FinalCTASection onGetStarted={scrollToTop} />
       <Footer />
 
