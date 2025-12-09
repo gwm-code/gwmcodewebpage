@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { 
   CreditCard, FileText, Users, Menu, X, Check, ArrowRight, 
@@ -601,14 +602,18 @@ function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#" className="hover:text-white transition-colors duration-200">
+         <div className="flex items-center gap-6 text-sm">
+            {/* Link to Privacy Page */}
+            <Link href="/privacy" className="hover:text-white transition-colors duration-200">
               Privacy Policy
-            </a>
+            </Link>
+            
             <span className="text-gray-700">|</span>
-            <a href="#" className="hover:text-white transition-colors duration-200">
+            
+            {/* Link to Terms Page */}
+            <Link href="/terms" className="hover:text-white transition-colors duration-200">
               Terms of Service
-            </a>
+            </Link>
           </div>
 
           <div className="text-sm text-center md:text-right">
