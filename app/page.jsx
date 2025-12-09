@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { 
   CreditCard, FileText, Users, Menu, X, Check, ArrowRight, 
-  Shield, Zap, Clock, CheckCircle2
+  Shield, Zap, Clock, CheckCircle2, ChevronLeft, ChevronRight, Laptop
 } from 'lucide-react';
 
 // Animation variants
@@ -89,6 +89,15 @@ function Navbar({ onRequestDemo }) {
             >
               How It Works
             </button>
+            
+            {/* NEW PORTFOLIO LINK */}
+            <button
+              onClick={() => scrollToSection('portfolio')}
+              className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-[15px]"
+            >
+              Our Work
+            </button>
+
             <button
               onClick={() => scrollToSection('case-studies')}
               className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium text-[15px]"
@@ -125,6 +134,9 @@ function Navbar({ onRequestDemo }) {
             <button onClick={() => scrollToSection('process')} className="block w-full text-left text-gray-700 hover:text-blue-600 py-2 font-medium">
               How It Works
             </button>
+            <button onClick={() => scrollToSection('portfolio')} className="block w-full text-left text-gray-700 hover:text-blue-600 py-2 font-medium">
+              Our Work
+            </button>
             <button onClick={() => scrollToSection('case-studies')} className="block w-full text-left text-gray-700 hover:text-blue-600 py-2 font-medium">
               Case Studies
             </button>
@@ -146,7 +158,6 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-8">
             <AnimatedSection>
-              {/* UPDATED: Localized Trust Badge */}
               <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-4 py-2 text-sm font-medium text-blue-700">
                 <CheckCircle2 size={16} />
                 <span>Building custom tools for Irish SMEs</span>
@@ -184,7 +195,6 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
               </div>
             </AnimatedSection>
 
-            {/* NEW: Pricing Comparison Hook */}
             <AnimatedSection delay={0.35}>
               <div className="mt-8 bg-slate-50 border border-slate-200 rounded-xl p-4 max-w-md">
                 <div className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wider">The Real Cost of Software</div>
@@ -217,7 +227,6 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
           </div>
 
           <AnimatedSection delay={0.2}>
-            {/* ADDED id="contact-form" HERE 👇 */}
             <div id="contact-form" className="bg-white rounded-2xl border-2 border-gray-200 p-8 shadow-xl sticky top-28 scroll-mt-24">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">
@@ -245,7 +254,6 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
                   />
                 </div>
 
-                {/* UPDATED: Optional Business Name */}
                 <div>
                   <label htmlFor="businessName" className="block text-sm font-semibold text-gray-700 mb-1.5">
                     Business Name <span className="text-gray-400 font-normal">(Optional)</span>
@@ -340,7 +348,7 @@ function HeroSection({ onSubmit, formData, handleChange, isSubmitting, submitErr
   );
 }
 
-// Social Proof Stats
+// Stats Section
 function StatsSection() {
   const stats = [
     { value: '50+', label: 'Projects Delivered' },
@@ -428,7 +436,7 @@ function ServicesSection() {
   );
 }
 
-// How It Works / Process
+// Process Section
 function ProcessSection() {
   const steps = [
     {
@@ -484,6 +492,153 @@ function ProcessSection() {
               </div>
             </AnimatedSection>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- NEW PORTFOLIO SLIDESHOW SECTION ---
+function PortfolioSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // NOTE FOR TAPIO: 
+  // 1. Put your screenshots in the 'public' folder of your project.
+  // 2. Name them project1.jpg, project2.jpg, etc.
+  // 3. The code below looks for them there. 
+  // For now, I'm using placeholder colors so it works immediately.
+  
+  const projects = [
+    {
+      title: "Cafe POS System",
+      category: "Point of Sale",
+      description: "A custom tablet-based register for a busy Wexford cafe. Features include one-tap ordering, kitchen display sync, and end-of-day sales reports.",
+      // Change '/project1.jpg' to your real file path if you have one
+      image: "/project1.jpg", 
+      fallbackColor: "bg-slate-800", 
+      tags: ["React", "Touch Interface", "Real-time"]
+    },
+    {
+      title: "Mechanic Shop CRM",
+      category: "Customer Management",
+      description: "Keeps track of vehicle service history, automates NCT reminders via SMS, and manages parts inventory.",
+      image: "/project2.jpg",
+      fallbackColor: "bg-blue-900",
+      tags: ["Database", "SMS Alerts", "Invoicing"]
+    },
+    {
+      title: "Construction Invoicing Tool",
+      category: "Billing Automation",
+      description: "Generates professional PDF quotes and invoices on-site from a mobile phone. Tracks payments and outstanding balances.",
+      image: "/project3.jpg",
+      fallbackColor: "bg-teal-900",
+      tags: ["Mobile First", "PDF Generation", "Cloud Sync"]
+    }
+  ];
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % projects.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+  };
+
+  return (
+    <section id="portfolio" className="py-24 bg-slate-900 text-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <AnimatedSection className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 text-blue-400 font-medium mb-2">
+              <Laptop size={20} />
+              <span>Our Work</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold">Recent Projects</h2>
+          </div>
+          
+          {/* Navigation Controls */}
+          <div className="flex gap-4">
+            <button 
+              onClick={prevSlide}
+              className="w-12 h-12 rounded-full border border-slate-600 flex items-center justify-center hover:bg-slate-800 hover:border-blue-500 transition-all"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button 
+              onClick={nextSlide}
+              className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center hover:bg-blue-700 transition-all"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+        </AnimatedSection>
+
+        {/* Slideshow Content */}
+        <div className="relative">
+          <AnimatePresence mode='wait'>
+            <motion.div 
+              key={currentIndex}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.4 }}
+              className="grid lg:grid-cols-2 gap-12 items-center"
+            >
+              {/* Image Side - Handles both real images and fallbacks */}
+              <div className={`relative aspect-video ${projects[currentIndex].fallbackColor} rounded-xl overflow-hidden shadow-2xl border border-slate-700 group flex items-center justify-center`}>
+                
+                {/* Text for placeholder if image fails or is missing */}
+                <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-mono text-sm">
+                   [Screenshot: {projects[currentIndex].title}]
+                </div>
+
+                <img 
+                  src={projects[currentIndex].image} 
+                  alt={projects[currentIndex].title}
+                  className="absolute inset-0 w-full h-full object-cover opacity-100 error:opacity-0"
+                  onError={(e) => {e.target.style.display='none'}} 
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent pointer-events-none" />
+              </div>
+
+              {/* Text Side */}
+              <div className="space-y-6">
+                <div>
+                  <span className="text-blue-400 font-medium tracking-wide text-sm uppercase">
+                    {projects[currentIndex].category}
+                  </span>
+                  <h3 className="text-3xl font-bold mt-2 mb-4">
+                    {projects[currentIndex].title}
+                  </h3>
+                  <p className="text-slate-300 text-lg leading-relaxed">
+                    {projects[currentIndex].description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {projects[currentIndex].tags.map((tag, idx) => (
+                    <span 
+                      key={idx} 
+                      className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-sm text-slate-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="pt-6 border-t border-slate-800 flex items-center gap-4 text-sm text-slate-400">
+                  <span>Project {currentIndex + 1} of {projects.length}</span>
+                  <div className="flex-1 h-1 bg-slate-800 rounded-full">
+                    <div 
+                      className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                      style={{ width: `${((currentIndex + 1) / projects.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
@@ -602,15 +757,11 @@ function Footer() {
             </div>
           </div>
 
-         <div className="flex items-center gap-6 text-sm">
-            {/* Link to Privacy Page */}
+          <div className="flex items-center gap-6 text-sm">
             <Link href="/privacy" className="hover:text-white transition-colors duration-200">
               Privacy Policy
             </Link>
-            
             <span className="text-gray-700">|</span>
-            
-            {/* Link to Terms Page */}
             <Link href="/terms" className="hover:text-white transition-colors duration-200">
               Terms of Service
             </Link>
@@ -684,7 +835,7 @@ export default function GWMCodeLanding() {
     }
   };
 
-  // NEW: Scroll specifically to the form ID
+  // Scroll specifically to the form ID
   const scrollToForm = () => {
     const formElement = document.getElementById('contact-form');
     if (formElement) {
@@ -707,8 +858,11 @@ export default function GWMCodeLanding() {
       <StatsSection />
       <ServicesSection />
       <ProcessSection />
+      
+      {/* NEW PORTFOLIO SECTION HERE */}
+      <PortfolioSection />
+      
       <CaseStudiesSection />
-      {/* TestimonialsSection removed as requested */}
       
       {/* Pass the new function to the bottom CTA too */}
       <FinalCTASection onGetStarted={scrollToForm} />
