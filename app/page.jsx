@@ -502,46 +502,26 @@ function ProcessSection() {
 function PortfolioSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // NOTE FOR TAPIO: 
-  // 1. Put your screenshots in the 'public' folder of your project.
-  // 2. Name them project1.jpg, project2.jpg, etc.
-  // 3. The code below looks for them there. 
-  // For now, I'm using placeholder colors so it works immediately.
-  
-  const projects = [
-    {
-      title: "Cafe POS System",
-      category: "Point of Sale",
-      description: "A custom tablet-based register for a busy Wexford cafe. Features include one-tap ordering, kitchen display sync, and end-of-day sales reports.",
-      // Change '/project1.jpg' to your real file path if you have one
-      image: "/project1.jpg", 
-      fallbackColor: "bg-slate-800", 
-      tags: ["React", "Touch Interface", "Real-time"]
-    },
-    {
-      title: "Mechanic Shop CRM",
-      category: "Customer Management",
-      description: "Keeps track of vehicle service history, automates NCT reminders via SMS, and manages parts inventory.",
-      image: "/project2.jpg",
-      fallbackColor: "bg-blue-900",
-      tags: ["Database", "SMS Alerts", "Invoicing"]
-    },
-    {
-      title: "Construction Invoicing Tool",
-      category: "Billing Automation",
-      description: "Generates professional PDF quotes and invoices on-site from a mobile phone. Tracks payments and outstanding balances.",
-      image: "/project3.jpg",
-      fallbackColor: "bg-teal-900",
-      tags: ["Mobile First", "PDF Generation", "Cloud Sync"]
-    }
-  ];
+  // DATA: Single Project with 4 Screenshots
+  const project = {
+    title: "VendorLoop",
+    category: "Retail Management System",
+    description: "A comprehensive platform for 'Rent-a-Rack' thrift stores. Handles everything from vendor contract management and barcode label generation to a full Point of Sale interface and automated commission payouts.",
+    tech: ["Next.js", "React", "Tailwind CSS", "Real-time DB"],
+    images: [
+      "/project-shot-1.jpg", // Point of Sale View
+      "/project-shot-2.jpg", // Vendor Contract & Management
+      "/project-shot-3.jpg", // Label Studio (Barcode Gen)
+      "/project-shot-4.jpg"  // Analytics & Payouts Dashboard
+    ]
+  };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % projects.length);
+    setCurrentIndex((prev) => (prev + 1) % project.images.length);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    setCurrentIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
   };
 
   return (
@@ -551,9 +531,9 @@ function PortfolioSection() {
           <div>
             <div className="inline-flex items-center gap-2 text-blue-400 font-medium mb-2">
               <Laptop size={20} />
-              <span>Our Work</span>
+              <span>Featured Project</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold">Recent Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{project.title}</h2>
           </div>
           
           {/* Navigation Controls */}
@@ -584,40 +564,33 @@ function PortfolioSection() {
               transition={{ duration: 0.4 }}
               className="grid lg:grid-cols-2 gap-12 items-center"
             >
-              {/* Image Side - Handles both real images and fallbacks */}
-              <div className={`relative aspect-video ${projects[currentIndex].fallbackColor} rounded-xl overflow-hidden shadow-2xl border border-slate-700 group flex items-center justify-center`}>
-                
-                {/* Text for placeholder if image fails or is missing */}
-                <div className="absolute inset-0 flex items-center justify-center text-slate-500 font-mono text-sm">
-                   [Screenshot: {projects[currentIndex].title}]
-                </div>
-
+              {/* Image Side */}
+              <div className="relative aspect-video bg-slate-800 rounded-xl overflow-hidden shadow-2xl border border-slate-700 group">
                 <img 
-                  src={projects[currentIndex].image} 
-                  alt={projects[currentIndex].title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-100 error:opacity-0"
-                  onError={(e) => {e.target.style.display='none'}} 
+                  src={project.images[currentIndex]} 
+                  alt={`${project.title} Screenshot ${currentIndex + 1}`}
+                  className="w-full h-full object-cover"
                 />
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent pointer-events-none" />
+                {/* Gradient Overlay for Cinematic Look */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent pointer-events-none" />
               </div>
 
               {/* Text Side */}
               <div className="space-y-6">
                 <div>
                   <span className="text-blue-400 font-medium tracking-wide text-sm uppercase">
-                    {projects[currentIndex].category}
+                    {project.category}
                   </span>
-                  <h3 className="text-3xl font-bold mt-2 mb-4">
-                    {projects[currentIndex].title}
+                  <h3 className="text-2xl font-bold mt-2 mb-4">
+                    System Overview
                   </h3>
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    {projects[currentIndex].description}
+                    {project.description}
                   </p>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {projects[currentIndex].tags.map((tag, idx) => (
+                  {project.tech.map((tag, idx) => (
                     <span 
                       key={idx} 
                       className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-sm text-slate-300"
@@ -627,12 +600,13 @@ function PortfolioSection() {
                   ))}
                 </div>
 
+                {/* Progress Bar */}
                 <div className="pt-6 border-t border-slate-800 flex items-center gap-4 text-sm text-slate-400">
-                  <span>Project {currentIndex + 1} of {projects.length}</span>
+                  <span>Screenshot {currentIndex + 1} of {project.images.length}</span>
                   <div className="flex-1 h-1 bg-slate-800 rounded-full">
                     <div 
                       className="h-full bg-blue-500 rounded-full transition-all duration-300"
-                      style={{ width: `${((currentIndex + 1) / projects.length) * 100}%` }}
+                      style={{ width: `${((currentIndex + 1) / project.images.length) * 100}%` }}
                     />
                   </div>
                 </div>
